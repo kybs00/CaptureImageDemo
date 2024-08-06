@@ -12,11 +12,10 @@ namespace WgcCaptureDemo
     internal class MonitorInfo
     {
         public bool IsPrimary { get; set; }
-        public Vector2 ScreenSize { get; set; }
         public Rect MonitorArea { get; set; }
         public Rect WorkArea { get; set; }
         public string DeviceName { get; set; }
-        public IntPtr Hmon { get; set; }
+        public IntPtr MonitorHandle { get; set; }
     }
     internal static class MonitorHelper
     {
@@ -43,14 +42,12 @@ namespace WgcCaptureDemo
                     {
                         var info = new MonitorInfo
                         {
-                            ScreenSize =
-                                new Vector2(mi.Monitor.right - mi.Monitor.left, mi.Monitor.bottom - mi.Monitor.top),
                             MonitorArea = new Rect(mi.Monitor.left, mi.Monitor.top, mi.Monitor.right - mi.Monitor.left,
                                 mi.Monitor.bottom - mi.Monitor.top),
                             WorkArea = new Rect(mi.WorkArea.left, mi.WorkArea.top, mi.WorkArea.right - mi.WorkArea.left,
                                 mi.WorkArea.bottom - mi.WorkArea.top),
                             IsPrimary = mi.Flags > 0,
-                            Hmon = hMonitor,
+                            MonitorHandle = hMonitor,
                             DeviceName = mi.DeviceName
                         };
                         result.Add(info);

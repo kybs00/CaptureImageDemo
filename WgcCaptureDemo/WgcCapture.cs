@@ -61,7 +61,7 @@ namespace WgcCaptureDemo
         /// <summary>
         /// 开始捕获
         /// </summary>
-        public void StartCapture(bool startMonitor = false)
+        public void StartCapture()
         {
             _session.StartCapture();
         }
@@ -72,8 +72,6 @@ namespace WgcCaptureDemo
         public void StopCapture()
         {
             Dispose();
-            _session = null;
-            _framePool = null;
         }
 
         private void OnFrameArrived(Direct3D11CaptureFramePool sender, object args)

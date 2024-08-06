@@ -27,8 +27,8 @@ namespace WgcCaptureDemo
         }
         private void CaptureButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var hmon = MonitorHelper.GetMonitors().First().Hmon;
-            var wgcCapture = new WgcCapture(hmon, CaptureType.Screen);
+            var monitorHandle = MonitorHelper.GetMonitors().First().MonitorHandle;
+            var wgcCapture = new WgcCapture(monitorHandle, CaptureType.Screen);
             wgcCapture.FrameArrived += WgcCapture_FrameArrived;
             wgcCapture.StartCapture();
         }
