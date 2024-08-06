@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
@@ -36,15 +37,11 @@ namespace WgcCaptureDemo
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                CaptureImage.Source = ByteArrayToBitmapImage(e.Data, e.Size.Width, e.Size.Height);
+                var stride = e.Size.Width * 4; // 4 bytes per pixel in BGRA format
+                var bitmap = BitmapSource.Create(e.Size.Width, e.Size.Height, 96, 96, PixelFormats.Bgra32, null, e.Data, stride);
+                bitmap.Freeze();
+                CaptureImage.Source = bitmap;
             });
-        }
-        public BitmapSource ByteArrayToBitmapImage(byte[] data, int width, int height)
-        {
-            var stride = width * 4; // 4 bytes per pixel in BGRA format
-            var bitmap = BitmapSource.Create(width, height, 96, 96, PixelFormats.Bgra32, null, data, stride);
-            bitmap.Freeze();
-            return bitmap;
         }
     }
 }
