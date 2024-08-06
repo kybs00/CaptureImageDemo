@@ -18,28 +18,28 @@ namespace WgcCaptureDemo
     /// </summary>
     internal class WgcCapture
     {
-        public WgcCapture(IntPtr hWnd, CaptureType captureType)
+    public WgcCapture(IntPtr hWnd, CaptureType captureType)
+    {
+        if (!GraphicsCaptureSession.IsSupported())
         {
-            if (!GraphicsCaptureSession.IsSupported())
-            {
-                throw new Exception("不支Windows Graphics Capture API");
-            }
-            var item = captureType == CaptureType.Screen ? CaptureHelper.CreateItemForMonitor(hWnd) : CaptureHelper.CreateItemForWindow(hWnd);
-            CaptureSize = new Size(item.Size.Width, item.Size.Height);
-
-            var d3dDevice = Direct3D11Helper.CreateDevice(false);
-            _device = Direct3D11Helper.CreateSharpDxDevice(d3dDevice);
-            _framePool = Direct3D11CaptureFramePool.CreateFreeThreaded(d3dDevice, pixelFormat: DirectXPixelFormat.B8G8R8A8UIntNormalized, numberOfBuffers: 1, item.Size);
-            _desktopImageTexture = CreateTexture2D(_device, item.Size);
-            _framePool.FrameArrived += OnFrameArrived;
-            item.Closed += (i, _) =>
-            {
-                _framePool.FrameArrived -= OnFrameArrived;
-                StopCapture();
-                ItemClosed?.Invoke(this, i);
-            };
-            _session = _framePool.CreateCaptureSession(item);
+            throw new Exception("不支Windows Graphics Capture API");
         }
+        var item = captureType == CaptureType.Screen ? CaptureUtils.CreateItemForMonitor(hWnd) : CaptureUtils.CreateItemForWindow(hWnd);
+        CaptureSize = new Size(item.Size.Width, item.Size.Height);
+
+        var d3dDevice = Direct3D11Utils.CreateDevice(false);
+        _device = Direct3D11Utils.CreateSharpDxDevice(d3dDevice);
+        _framePool = Direct3D11CaptureFramePool.CreateFreeThreaded(d3dDevice, pixelFormat: DirectXPixelFormat.B8G8R8A8UIntNormalized, numberOfBuffers: 1, item.Size);
+        _desktopImageTexture = CreateTexture2D(_device, item.Size);
+        _framePool.FrameArrived += OnFrameArrived;
+        item.Closed += (i, _) =>
+        {
+            _framePool.FrameArrived -= OnFrameArrived;
+            StopCapture();
+            ItemClosed?.Invoke(this, i);
+        };
+        _session = _framePool.CreateCaptureSession(item);
+    }
 
         private Texture2D CreateTexture2D(Device device, SizeInt32 size)
         {
@@ -92,7 +92,7 @@ namespace WgcCaptureDemo
 
         private byte[] CopyFrameToBytes(Direct3D11CaptureFrame frame)
         {
-            using var bitmap = Direct3D11Helper.CreateSharpDxTexture2D(frame.Surface);
+            using var bitmap = Direct3D11Utils.CreateSharpDxTexture2D(frame.Surface);
             _device.ImmediateContext.CopyResource(bitmap, _desktopImageTexture);
             // 将Texture2D资源映射到CPU内存
             var mappedResource = _device.ImmediateContext.MapSubresource(_desktopImageTexture, 0, MapMode.Read, MapFlags.None);

@@ -9,17 +9,9 @@ namespace WgcCaptureDemo
     /// <summary>
     /// Capture辅助类
     /// </summary>
-    public static class CaptureHelper
+    public static class CaptureUtils
     {
         static readonly Guid GraphicsCaptureItemGuid = new Guid("79C3F95B-31F7-4EC2-A464-632EF5D30760");
-
-        [ComImport]
-        [Guid("3E68D4BD-7135-4D10-8018-9FB6D9F33FA1")]
-        [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-        interface IInitializeWithWindow
-        {
-            void Initialize(IntPtr hWnd);
-        }
 
         [ComImport]
         [Guid("3628E81B-3CAC-4C60-B7F4-23CE0E0C3356")]
@@ -55,7 +47,7 @@ namespace WgcCaptureDemo
             internal static extern unsafe int RoGetActivationFactory(IntPtr runtimeClassId, ref Guid iid, IntPtr* factory);
         }
 
-        internal static class WinRtModule
+        private static class WinRtModule
         {
             private static readonly Dictionary<string, ObjectReference<IActivationFactoryVftbl>> Cache = new Dictionary<string, ObjectReference<IActivationFactoryVftbl>>();
 
@@ -123,18 +115,7 @@ namespace WgcCaptureDemo
             private static IntPtr s_cookie;
             private static readonly object s_lock = new object();
         }
-
-        /// <summary>
-        /// 设置 GraphicsCapturePicker 的窗口句柄，以便捕获特定窗口的内容。
-        /// </summary>
-        /// <param name="picker">GraphicsCapturePicker 实例，用于启动窗口捕获。</param>
-        /// <param name="hwnd"> 窗口句柄，指定要捕获的窗口。</param>
-        public static void SetWindow(this GraphicsCapturePicker picker, IntPtr hwnd)
-        {
-            var interop = picker.As<IInitializeWithWindow>();
-            interop.Initialize(hwnd);
-        }
-
+        
         /// <summary>
         /// 根据窗口句柄创建 GraphicsCaptureItem 实例。
         /// </summary>

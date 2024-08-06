@@ -17,7 +17,7 @@ namespace WgcCaptureDemo
         public string DeviceName { get; set; }
         public IntPtr MonitorHandle { get; set; }
     }
-    internal static class MonitorHelper
+    internal static class MonitorUtils
     {
         private const int CCHDEVICENAME = 32;
 

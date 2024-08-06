@@ -12,7 +12,7 @@ namespace WgcCaptureDemo
     /// <summary>
     ///     D3D辅助类
     /// </summary>
-    internal static class Direct3D11Helper
+    internal static class Direct3D11Utils
     {
         private static Guid IInspectable = new("AF86E2E0-B12D-4c6a-9C5A-D7AA65101E90");
         private static Guid ID3D11Resource = new("dc8e63f3-d12b-4952-b47b-5e45026a862d");
