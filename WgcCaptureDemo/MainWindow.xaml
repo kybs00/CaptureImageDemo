@@ -13,7 +13,7 @@
        </Grid.RowDefinitions>
         <Image x:Name="CaptureImage"></Image>
         <StackPanel Orientation="Horizontal" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Button x:Name="CaptureButton" Click="CaptureButton_OnClick" Content="桌面截图"></Button>
+            <Button x:Name="CaptureButton" Click="CaptureButton_OnClick" Content="桌面录制"></Button>
         </StackPanel>
     </Grid>
 </Window>

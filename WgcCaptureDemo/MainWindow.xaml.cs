@@ -36,7 +36,7 @@ namespace WgcCaptureDemo
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                return CaptureImage.Source = ByteArrayToBitmapImage(e.Data, e.Size.Width, e.Size.Height);
+                CaptureImage.Source = ByteArrayToBitmapImage(e.Data, e.Size.Width, e.Size.Height);
             });
         }
         public BitmapSource ByteArrayToBitmapImage(byte[] data, int width, int height)
