@@ -35,10 +35,11 @@ namespace WgcCaptureDemo
 
         private void WgcCapture_FrameArrived(object? sender, CaptureFrame e)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            Application.Current?.Dispatcher.Invoke(() =>
             {
                 var stride = e.Size.Width * 4; // 4 bytes per pixel in BGRA format
                 var bitmap = BitmapSource.Create(e.Size.Width, e.Size.Height, 96, 96, PixelFormats.Bgra32, null, e.Data, stride);
+
                 bitmap.Freeze();
                 CaptureImage.Source = bitmap;
             });
